@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumina Care | AI Childcare Intelligence Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --primary-light: #ccfbf1;
+      --secondary: #6366f1;
+      --accent: #f59e0b;
+      --background: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 16px;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--background);
+      color: var(--text-main);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #134e4a 0%, #0d9488 100%);
+      color: white;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header h1 { 
+      font-size: 42px; 
+      font-weight: 700; 
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    header p { 
+      font-size: 18px; 
+      opacity: 0.9; 
+      max-width: 700px;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .container { 
+      padding: 40px 24px; 
+      max-width: 1200px; 
+      margin: -40px auto 0; 
+    }
+
+    .grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+      gap: 20px; 
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.7);
+      transition: var(--transition);
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat h2 { 
+      margin: 0; 
+      font-size: 32px; 
+      color: var(--primary); 
+      font-weight: 700;
+    }
+
+    .stat p { 
+      margin-top: 4px;
+      color: var(--text-muted); 
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-icon {
+      background: var(--primary-light);
+      color: var(--primary);
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    h3 { 
+      margin-bottom: 20px; 
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+    }
+
+    .alert {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
+      background: #f0fdfa;
+      transition: var(--transition);
+    }
+
+    .alert:hover {
+      filter: brightness(0.98);
+    }
+
+    .alert.high { border-left-color: var(--danger); background: #fff1f2; }
+    .alert.medium { border-left-color: var(--warning); background: #fffbeb; }
+    .alert.low { border-left-color: var(--success); background: #f0fdf4; }
+
+    .alert-icon { shrink: 0; padding-top: 2px; }
+    .alert-content strong { display: block; margin-bottom: 4px; font-size: 15px; }
+    .alert-content em { font-style: normal; font-size: 13px; color: var(--text-muted); display: block; margin-top: 4px; }
+
+    table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 10px; }
+    th { 
+      text-align: left; 
+      padding: 12px; 
+      color: var(--text-muted); 
+      font-weight: 600; 
+      font-size: 13px; 
+      text-transform: uppercase; 
+      border-bottom: 1px solid #f1f5f9;
+    }
+    td { padding: 16px 12px; border-bottom: 1px solid #f1f5f9; font-size: 15px; }
+    tr:last-child td { border-bottom: none; }
+
+    .badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #d1fae5;
+      color: #065f46;
+      display: inline-block;
+    }
+    .badge.watch { background: #fef3c7; color: #92400e; }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      margin-bottom: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover { 
+      background: var(--primary-dark); 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+    }
+
+    button:active { transform: translateY(0); }
+
+    .ai-box {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      color: #475569;
+      min-height: 80px;
+      font-size: 14px;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    .ai-box.active {
+      background: #ecfeff;
+      border-color: #22d3ee;
+      color: #0e7490;
+      animation: pulse 2s infinite;
+    }
+
+    .forecast-item { margin-bottom: 16px; }
+    .forecast-label { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 14px; font-weight: 500; }
+    .bar {
+      height: 10px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, #2dd4bf 100%);
+      border-radius: 10px;
+      transition: width 1s ease-in-out;
+    }
+
+    .insight-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .insight-item:last-child { border-bottom: none; }
+    .insight-item strong { color: var(--primary); font-size: 14px; }
+    .insight-item p { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+
+    .footer-note {
+      margin: 40px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .grid-3-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-layout, .grid-3-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Lumina Care AI</h1>
+      <p>Precision intelligence for modern childcare. Automating compliance, optimizing ratios, and surfacing developmental insights in real-time.</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Key Stats -->
+    <div class="grid">
+      <div class="card stat" style="animation-delay: 0.1s">
+        <div class="stat-icon"><i data-lucide="users"></i></div>
+        <h2>80 / 95</h2>
+        <p>Children Checked In</p>
+      </div>
+      <div class="card stat" style="animation-delay: 0.2s">
+        <div class="stat-icon"><i data-lucide="user-check"></i></div>
+        <h2>15</h2>
+        <p>Staff On Shift</p>
+      </div>
+      <div class="card stat" style="animation-delay: 0.3s">
+        <div class="stat-icon"><i data-lucide="shield-check"></i></div>
+        <h2>92%</h2>
+        <p>Compliance Score</p>
+      </div>
+      <div class="card stat" style="animation-delay: 0.4s">
+        <div class="stat-icon"><i data-lucide="trending-up"></i></div>
+        <h2>$95K</h2>
+        <p>Monthly Revenue</p>
+      </div>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Alerts -->
+      <div class="card" style="animation-delay: 0.5s">
+        <h3><i data-lucide="bell"></i> AI Priority Alerts</h3>
+        <div class="alert high">
+          <div class="alert-icon"><i data-lucide="alert-circle" style="color: var(--danger)"></i></div>
+          <div class="alert-content">
+            <strong>Staffing Risk: Ratio Breach Predicted</strong>
+            <span>Toddler room likely to exceed ratio tomorrow 08:00 – 09:30 AM based on check-in trends.</span>
+            <em>Recommendation: Schedule 1 additional casual educator.</em>
+          </div>
+        </div>
+        <div class="alert medium">
+          <div class="alert-icon"><i data-lucide="clock" style="color: var(--warning)"></i></div>
+          <div class="alert-content">
+            <strong>Compliance: Expiring Authorisations</strong>
+            <span>3 medication authorisations expire within 72 hours.</span>
+            <em>Recommendation: Automated reminders triggered for parent app.</em>
+          </div>
+        </div>
+        <div class="alert medium">
+          <div class="alert-icon"><i data-lucide="message-square" style="color: var(--warning)"></i></div>
+          <div class="alert-content">
+            <strong>Operational: Latency in Communication</strong>
+            <span>Parent response times are up 24% this week.</span>
+            <em>Recommendation: Use Lumina Reply Assistant to clear queue.</em>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Assistant -->
+      <div class="card" style="animation-delay: 0.6s">
+        <h3><i data-lucide="zap"></i> Ask Lumina AI</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Query your operations, staff schedules, or financial data.</p>
+        <input id="question" placeholder="e.g., What is our staffing risk?" />
+        <button onclick="askAI()">
+          <i data-lucide="sparkles"></i> Analyze Query
+        </button>
+        <div id="aiResponse" class="ai-box">I'm monitoring your centre. Ask me about staffing, revenue, or compliance.</div>
+      </div>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Monitoring Table -->
+      <div class="card" style="animation-delay: 0.7s">
+        <h3><i data-lucide="layout-dashboard"></i> Room & Staffing Monitor</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Room</th>
+              <th>Children</th>
+              <th>Staff</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Nursery (0-2)</td>
+              <td>12 / 16</td>
+              <td>4</td>
+              <td><span class="badge">Optimal</span></td>
+            </tr>
+            <tr>
+              <td>Toddlers (2-3)</td>
+              <td>22 / 24</td>
+              <td>5</td>
+              <td><span class="badge watch">At Risk</span></td>
+            </tr>
+            <tr>
+              <td>Pre-School</td>
+              <td>28 / 30</td>
+              <td>4</td>
+              <td><span class="badge">Optimal</span></td>
+            </tr>
+            <tr>
+              <td>Schoolies</td>
+              <td>18 / 25</td>
+              <td>2</td>
+              <td><span class="badge">Optimal</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Occupancy Forecast -->
+      <div class="card" style="animation-delay: 0.8s">
+        <h3><i data-lucide="bar-chart-3"></i> Occupancy Forecast</h3>
+        <div class="forecast-item">
+          <div class="forecast-label"><span>Nursery</span><span>75%</span></div>
+          <div class="bar"><span style="width:75%"></span></div>
+        </div>
+        <div class="forecast-item">
+          <div class="forecast-label"><span>Toddlers</span><span>92%</span></div>
+          <div class="bar"><span style="width:92%"></span></div>
+        </div>
+        <div class="forecast-item">
+          <div class="forecast-label"><span>Pre-School</span><span>93%</span></div>
+          <div class="bar"><span style="width:93%"></span></div>
+        </div>
+        <div class="forecast-item">
+          <div class="forecast-label"><span>Schoolies</span><span>72%</span></div>
+          <div class="bar"><span style="width:72%"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3-col">
+      <div class="card" style="animation-delay: 0.9s">
+        <h3><i data-lucide="brain"></i> Child Insights</h3>
+        <div class="insight-item">
+          <strong>Emma S.</strong>
+          <p>Exhibiting advanced social play and verbal storytelling markers.</p>
+        </div>
+        <div class="insight-item">
+          <strong>Oliver W.</strong>
+          <p>Fine motor progression noted in sensory play activities.</p>
+        </div>
+        <div class="insight-item">
+          <strong>Mia L.</strong>
+          <p>AI suggests targeted group interaction support for social goals.</p>
+        </div>
+      </div>
+
+      <div class="card" style="animation-delay: 1.0s">
+        <h3><i data-lucide="mail"></i> Parent Hub</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 20px;">Automated updates and personalized newsletters.</p>
+        <button onclick="generateNewsletter()" style="background: var(--secondary); margin-bottom: 12px;">
+          <i data-lucide="file-text"></i> Draft Weekly Newsletter
+        </button>
+        <div id="newsletter" class="ai-box">Draft will be generated based on this week's activities.</div>
+      </div>
+
+      <div class="card" style="animation-delay: 1.1s">
+        <h3><i data-lucide="pie-chart"></i> Business Intel</h3>
+        <div class="insight-item">
+          <strong>Revenue Growth</strong>
+          <p>+12% month-on-month trend in secondary service bookings.</p>
+        </div>
+        <div class="insight-item">
+          <strong>Waitlist Demand</strong>
+          <p>Nursery waitlist has grown by 15 children for Q3.</p>
+        </div>
+        <div class="insight-item">
+          <strong>Operational Risk</strong>
+          <p>Staff burnout risk detected in Toddler room shift patterns.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer-note">Enterprise Preview | Lumina Care Intelligence Systems v2.4</p>
+  </div>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    function askAI() {
+      const question = document.getElementById("question").value.toLowerCase();
+      const response = document.getElementById("aiResponse");
+      
+      response.classList.add('active');
+      response.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Lumina is analyzing data...';
+      lucide.createIcons();
+
+      setTimeout(() => {
+        response.classList.remove('active');
+        if (question.includes("staff") || question.includes("ratio")) {
+          response.innerHTML = "<strong>Analysis:</strong> Toddler room ratio is the primary risk factor for tomorrow. I recommend adding one casual educator for the 8:00–9:30 AM window to maintain 100% compliance safety margins.";
+        } else if (question.includes("parent") || question.includes("message")) {
+          response.innerHTML = "<strong>Status:</strong> 3 urgent parent messages are pending. I've drafted suggested replies that address the specific inquiries about the upcoming excursion. Would you like to review them?";
+        } else if (question.includes("revenue") || question.includes("occupancy")) {
+          response.innerHTML = "<strong>Financial Insight:</strong> Revenue is on a strong upward trajectory (+8%). Nursery occupancy is at peak capacity; I recommend launching the July enrolment campaign for the Pre-School transition to maximize yield.";
+        } else if (question.includes("compliance")) {
+          response.innerHTML = "<strong>Compliance Audit:</strong> High priority. 3 medication forms and 2 incident report sign-offs are due. I've flagged these for the Room Leaders.";
+        } else {
+          response.innerHTML = "<strong>Lumina Daily Briefing:</strong> Priorities for today: 1. Resolve Toddler staffing for tomorrow. 2. Clear parent message queue. 3. Review Q3 Pre-School enrolment targets.";
+        }
+      }, 800);
+    }
+
+    function generateNewsletter() {
+      const box = document.getElementById("newsletter");
+      box.classList.add('active');
+      box.innerHTML = "Generating draft...";
+      
+      setTimeout(() => {
+        box.classList.remove('active');
+        box.innerHTML = "<strong>Weekly Digest Draft:</strong><br>Dear Families, what a vibrant week! Our explorers engaged in deep sensory play, focusing on fine motor development and collaborative storytelling. <strong>Action Required:</strong> Please check the app for updated medication forms due Friday. Warmly, the Lumina Team.";
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
