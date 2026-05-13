@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lumina Care | AI Childcare Intelligence Dashboard</title>
+  <title>AI Childcare Intelligence Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -320,7 +320,7 @@
 <body>
   <header>
     <div class="header-content">
-      <h1>Lumina Care AI</h1>
+      <h1>AI Childcare Intelligence Dashboard</h1>
       <p>Precision intelligence for modern childcare. Automating compliance, optimizing ratios, and surfacing developmental insights in real-time.</p>
     </div>
   </header>
@@ -375,20 +375,20 @@
           <div class="alert-content">
             <strong>Operational: Latency in Communication</strong>
             <span>Parent response times are up 24% this week.</span>
-            <em>Recommendation: Use Lumina Reply Assistant to clear queue.</em>
+            <em>Recommendation: Use AI Reply Assistant to clear queue.</em>
           </div>
         </div>
       </div>
 
       <!-- AI Assistant -->
       <div class="card" style="animation-delay: 0.6s">
-        <h3><i data-lucide="zap"></i> Ask Lumina AI</h3>
+        <h3><i data-lucide="zap"></i> Ask AI Assistant</h3>
         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Query your operations, staff schedules, or financial data.</p>
         <input id="question" placeholder="e.g., What is our staffing risk?" />
         <button onclick="askAI()">
           <i data-lucide="sparkles"></i> Analyze Query
         </button>
-        <div id="aiResponse" class="ai-box">I'm monitoring your centre. Ask me about staffing, revenue, or compliance.</div>
+        <div id="aiResponse" class="ai-box">The AI is monitoring your centre. Ask me about staffing, revenue, or compliance.</div>
       </div>
     </div>
 
@@ -499,7 +499,7 @@
       </div>
     </div>
 
-    <p class="footer-note">Enterprise Preview | Lumina Care Intelligence Systems v2.4</p>
+    <p class="footer-note">Enterprise Preview | AI Childcare Intelligence Systems v2.4</p>
   </div>
 
   <script>
@@ -511,7 +511,7 @@
       const response = document.getElementById("aiResponse");
       
       response.classList.add('active');
-      response.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Lumina is analyzing data...';
+      response.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> AI is analyzing data...';
       lucide.createIcons();
 
       setTimeout(() => {
@@ -525,7 +525,7 @@
         } else if (question.includes("compliance")) {
           response.innerHTML = "<strong>Compliance Audit:</strong> High priority. 3 medication forms and 2 incident report sign-offs are due. I've flagged these for the Room Leaders.";
         } else {
-          response.innerHTML = "<strong>Lumina Daily Briefing:</strong> Priorities for today: 1. Resolve Toddler staffing for tomorrow. 2. Clear parent message queue. 3. Review Q3 Pre-School enrolment targets.";
+          response.innerHTML = "<strong>Daily AI Briefing:</strong> Priorities for today: 1. Resolve Toddler staffing for tomorrow. 2. Clear parent message queue. 3. Review Q3 Pre-School enrolment targets.";
         }
       }, 800);
     }
@@ -537,7 +537,7 @@
       
       setTimeout(() => {
         box.classList.remove('active');
-        box.innerHTML = "<strong>Weekly Digest Draft:</strong><br>Dear Families, what a vibrant week! Our explorers engaged in deep sensory play, focusing on fine motor development and collaborative storytelling. <strong>Action Required:</strong> Please check the app for updated medication forms due Friday. Warmly, the Lumina Team.";
+        box.innerHTML = "<strong>Weekly Digest Draft:</strong><br>Dear Families, what a vibrant week! Our explorers engaged in deep sensory play, focusing on fine motor development and collaborative storytelling. <strong>Action Required:</strong> Please check the app for updated medication forms due Friday. Warmly, the AI Childcare Team.";
       }, 1200);
     }
   </script>
